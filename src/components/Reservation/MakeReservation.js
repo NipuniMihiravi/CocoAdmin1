@@ -37,10 +37,11 @@ const MakeReservation = () => {
   // Function to check availability from the backend
   const checkAvailability = async (date) => {
     try {
-      const response = await axios.get(
-        `/reservation/checkAvailability?reservationDate=${date}`
-      );
-      const reservations = response.data;
+          // Convert date to ISO string format for the request
+          const formattedDate = new Date(date).toISOString().split('T')[0];
+          const response = await axios.get(`/api/reservation/checkAvailability?reservationDate=${formattedDate}`);
+          const reservations = response.data;
+
 
       // Check if the full day is booked
       const fullDayBooked = reservations.some(
@@ -81,7 +82,7 @@ const MakeReservation = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/reservation", formData);
+      const response = await axios.post("/api/reservation", formData);
       if (response.status === 200) {
         alert("Reservation submitted successfully!");
       }
@@ -98,7 +99,7 @@ const MakeReservation = () => {
 
   // Fetch reservations on component mount
   useEffect(() => {
-    axios.get('/reservation') // Adjust your endpoint as needed
+    axios.get('/api/reservation') // Adjust your endpoint as needed
       .then((response) => {
         const fetchedReservations = response.data;
         mapReservationToColors(fetchedReservations);

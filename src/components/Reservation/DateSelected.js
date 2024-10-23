@@ -19,7 +19,7 @@ const DateSelected = () => {
     try {
       const formattedDate = date.toLocaleDateString("en-CA"); // Format date as 'YYYY-MM-DD'
       const response = await axios.get(
-        `/reservation/checkAvailability?reservationDate=${formattedDate}`
+        `/api/reservation/checkAvailability?reservationDate=${formattedDate}`
       );
       setReservations(response.data);
       setErrorMessage("");

@@ -11,6 +11,7 @@ const FacilityList = () => {
     const [editFacility, setEditFacility] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const API_URL = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         fetchFacilities();
@@ -18,7 +19,7 @@ const FacilityList = () => {
 
     const fetchFacilities = async () => {
         try {
-            const response = await axios.get('/facility');
+            const response = await axios.get('${API_URL}/api/facility');
             setFacilities(response.data);
         } catch (error) {
             console.error('Error fetching facilities:', error);
@@ -28,7 +29,7 @@ const FacilityList = () => {
     const handleAddFacility = async () => {
         if (newFacility.heading && newFacility.description && newFacility.image) {
             try {
-                const response = await axios.post('/facility', newFacility);
+                const response = await axios.post('${API_URL}/api/facility', newFacility);
                 setFacilities([...facilities, response.data]);
                 setNewFacility({ heading: '', description: '', image: '' });
                 setIsAddModalOpen(false);
@@ -45,7 +46,7 @@ const FacilityList = () => {
        const confirmDelete = window.confirm("Are you sure you want to delete this facility?");
        if (confirmDelete) {
            try {
-               await axios.delete(`/facility/${id}`);
+               await axios.delete(`${API_URL}/api/facility/${id}`);
                setFacilities(facilities.filter(facility => facility.id !== id));
                alert('Facility deleted successfully!');
            } catch (error) {
@@ -64,7 +65,7 @@ const FacilityList = () => {
     const handleUpdateFacility = async () => {
         if (editFacility.heading && editFacility.description && editFacility.image) {
             try {
-                const response = await axios.put(`/facility/${editFacility.id}`, editFacility);
+                const response = await axios.put(`${API_URL}/api/facility/${editFacility.id}`, editFacility);
                 setFacilities(facilities.map(facility =>
                     facility.id === editFacility.id ? response.data : facility
                 ));

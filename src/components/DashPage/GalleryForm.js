@@ -15,7 +15,7 @@ const GalleryForm = () => {
     useEffect(() => {
         const fetchGalleries = async () => {
             try {
-                const response = await axios.get('/gallery');
+                const response = await axios.get('/api/gallery');
                 setGalleries(response.data);
             } catch (error) {
                 console.error('Error fetching galleries', error);
@@ -30,7 +30,7 @@ const GalleryForm = () => {
         if (selectedGalleryId) {
             const fetchItems = async () => {
                 try {
-                    const response = await axios.get(`/gallery/${selectedGalleryId}`);
+                    const response = await axios.get(`/api/gallery/${selectedGalleryId}`);
                     setItems(response.data.images || []);
                 } catch (error) {
                     console.error('Error fetching items', error);
@@ -45,7 +45,7 @@ const GalleryForm = () => {
     const handleAddGallery = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/gallery', {
+            const response = await axios.post('/api/gallery', {
                 name: galleryName,
                 category: newGalleryCategory,
                 images: []
@@ -54,7 +54,7 @@ const GalleryForm = () => {
                 alert('Gallery added successfully');
                 setGalleryName('');
                 setNewGalleryCategory('');
-                const updatedResponse = await axios.get('/gallery');
+                const updatedResponse = await axios.get('/api/gallery');
                 setGalleries(updatedResponse.data);
             }
         } catch (error) {
@@ -79,12 +79,12 @@ const GalleryForm = () => {
                     reader.readAsDataURL(file);
                 });
             }));
-            const response = await axios.post(`/gallery/${selectedGalleryId}/items`, items);
+            const response = await axios.post(`/api/gallery/${selectedGalleryId}/items`, items);
             if (response.status === 200) {
                 alert('Items added to gallery successfully');
                 setImageFiles([]);
                 setImagePreview('');
-                const updatedResponse = await axios.get(`/gallery/${selectedGalleryId}`);
+                const updatedResponse = await axios.get(`/api/gallery/${selectedGalleryId}`);
                 setItems(updatedResponse.data.images || []);
             }
         } catch (error) {
@@ -96,10 +96,10 @@ const GalleryForm = () => {
     // Handle deleting an item from a gallery
     const handleDeleteItem = async (itemId) => {
         try {
-            const response = await axios.delete(`/gallery/${selectedGalleryId}/items/${itemId}`);
+            const response = await axios.delete(`/api/gallery/${selectedGalleryId}/items/${itemId}`);
             if (response.status === 200) {
                 alert('Item deleted successfully');
-                const updatedResponse = await axios.get(`/gallery/${selectedGalleryId}`);
+                const updatedResponse = await axios.get(`/api/gallery/${selectedGalleryId}`);
                 setItems(updatedResponse.data.images || []);
             }
         } catch (error) {

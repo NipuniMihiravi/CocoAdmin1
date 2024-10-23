@@ -25,7 +25,7 @@ const AdminReservation = () => {
 
     const fetchReservations = async () => {
         try {
-            const response = await axios.get('/reservation'); // Adjust the API endpoint as needed
+            const response = await axios.get('/api/reservation'); // Adjust the API endpoint as needed
             setReservations(response.data);
         } catch (error) {
             console.error("Error fetching reservations:", error);
@@ -62,7 +62,7 @@ const handleEdit = async (updatedReservation) => {
 
     if (confirmEdit) {
         try {
-            await axios.put(`/reservation/${updatedReservation.id}`, updatedReservation); // Adjust the API endpoint
+            await axios.put(`/api/reservation/${updatedReservation.id}`, updatedReservation); // Adjust the API endpoint
             fetchReservations(); // Refresh the reservation list
             closeModal();
         } catch (error) {
@@ -76,7 +76,7 @@ const handleDelete = async (id) => {
 
     if (confirmDelete) {
         try {
-            await axios.delete(`/reservation/${id}`); // Adjust the API endpoint
+            await axios.delete(`/api/reservation/${id}`); // Adjust the API endpoint
             fetchReservations(); // Refresh the reservation list
         } catch (error) {
             console.error("Error deleting reservation:", error);

@@ -32,7 +32,7 @@ const CalendarView = () => {
   const checkAvailability = async (date) => {
     try {
       const formattedDate = date.toLocaleDateString('en-CA');
-      const response = await axios.get(`/reservation/checkAvailability?reservationDate=${formattedDate}`);
+      const response = await axios.get(`/api/reservation/checkAvailability?reservationDate=${formattedDate}`);
       const reservations = response.data;
 
       // Check full day booked
@@ -91,7 +91,7 @@ const CalendarView = () => {
 
   // Fetch reservations and map them to calendar colors
   useEffect(() => {
-    axios.get('/reservation') // Adjust your endpoint as needed
+    axios.get('/api/reservation') // Adjust your endpoint as needed
       .then((response) => {
         const fetchedReservations = response.data;
         setReservations(fetchedReservations);
