@@ -11,7 +11,7 @@ const FacilityList = () => {
     const [editFacility, setEditFacility] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const API_URL = process.env.REACT_APP_API_URL;
+    const API_URL = process.env.REACT_APP_API_URL; // Fetch the API URL from environment variable
 
     useEffect(() => {
         fetchFacilities();
@@ -19,7 +19,8 @@ const FacilityList = () => {
 
     const fetchFacilities = async () => {
         try {
-            const response = await axios.get('${API_URL}/api/facility');
+            const response = await axios.get(`${API_URL}/api/facility`); // Using the API_URL
+            console.log('Fetched facilities:', response.data); // Log the response data
             setFacilities(response.data);
         } catch (error) {
             console.error('Error fetching facilities:', error);
@@ -29,7 +30,7 @@ const FacilityList = () => {
     const handleAddFacility = async () => {
         if (newFacility.heading && newFacility.description && newFacility.image) {
             try {
-                const response = await axios.post('${API_URL}/api/facility', newFacility);
+                const response = await axios.post(`${API_URL}/api/facility`, newFacility); // Using the API_URL
                 setFacilities([...facilities, response.data]);
                 setNewFacility({ heading: '', description: '', image: '' });
                 setIsAddModalOpen(false);
@@ -42,19 +43,18 @@ const FacilityList = () => {
         }
     };
 
-   const handleDelete = async (id) => {
-       const confirmDelete = window.confirm("Are you sure you want to delete this facility?");
-       if (confirmDelete) {
-           try {
-               await axios.delete(`${API_URL}/api/facility/${id}`);
-               setFacilities(facilities.filter(facility => facility.id !== id));
-               alert('Facility deleted successfully!');
-           } catch (error) {
-               console.error('Error deleting facility:', error);
-           }
-       }
-   };
-
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this facility?");
+        if (confirmDelete) {
+            try {
+                await axios.delete(`${API_URL}/api/facility/${id}`); // Using the API_URL
+                setFacilities(facilities.filter(facility => facility.id !== id));
+                alert('Facility deleted successfully!');
+            } catch (error) {
+                console.error('Error deleting facility:', error);
+            }
+        }
+    };
 
     const handleEdit = (id) => {
         const facilityToEdit = facilities.find(facility => facility.id === id);
@@ -65,7 +65,7 @@ const FacilityList = () => {
     const handleUpdateFacility = async () => {
         if (editFacility.heading && editFacility.description && editFacility.image) {
             try {
-                const response = await axios.put(`${API_URL}/api/facility/${editFacility.id}`, editFacility);
+                const response = await axios.put(`${API_URL}/api/facility/${editFacility.id}`, editFacility); // Using the API_URL
                 setFacilities(facilities.map(facility =>
                     facility.id === editFacility.id ? response.data : facility
                 ));
@@ -95,7 +95,7 @@ const FacilityList = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setNewFacility({ ...newFacility, image: reader.result.split(',')[1] });
+                setNewFacility({ ...newFacility, image: reader.result.split(',')[1] }); // Store base64 string
             };
             reader.readAsDataURL(file);
         }
@@ -106,7 +106,7 @@ const FacilityList = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setEditFacility({ ...editFacility, image: reader.result.split(',')[1] });
+                setEditFacility({ ...editFacility, image: reader.result.split(',')[1] }); // Store base64 string
             };
             reader.readAsDataURL(file);
         }
@@ -211,7 +211,7 @@ const FacilityList = () => {
                         onChange={handleEditImageChange}
                     />
                     <button className="btn-edit-item" onClick={handleUpdateFacility}>Update Facility</button>
-                                        <button className="btn-delete-item" onClick={() => setIsEditModalOpen(false)}>Cancel</button>
+                    <button className="btn-delete-item" onClick={() => setIsEditModalOpen(false)}>Cancel</button>
                 </Modal>
             )}
         </div>
